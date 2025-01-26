@@ -1,0 +1,43 @@
+openapi: 3.0.0
+
+info:
+  title: API Bank Caixa
+  description: mock for api at Bank Caixa
+  version: 1.0.0
+
+paths:
+  /api/authentication:
+    post:
+      tags:
+        - Authentication
+      summary: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostRequestBody'
+      responses:
+        '200':
+          description: Bearer token authentication
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  token:
+                    type: string
+                    example: Bearer myToken
+
+components:
+  schemas:
+    PostRequestBody:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
