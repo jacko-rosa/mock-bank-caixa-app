@@ -28,7 +28,30 @@ paths:
                   token:
                     type: string
                     example: Bearer myToken
-
+  
+  /api/client:
+    post:
+      tags:
+        - Client
+      summary: siginUp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropCreateclientRequest'
+      responses:
+        '200':
+          description: Bearer token authentication
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  token:
+                    type: string
+                    example: Bearer myToken
+  
 components:
   schemas:
     PostRequestBody:
@@ -41,3 +64,16 @@ components:
       required:
         - username
         - password
+    PropCreateclientRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        password:
+          type: string
+        document:
+          type: string
+      required:
+        - name
+        - password
+        - document

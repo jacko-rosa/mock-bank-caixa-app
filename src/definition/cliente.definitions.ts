@@ -8,7 +8,7 @@ export interface PropCreateclientDTO {
 }
 
 export interface PropCreateclientSQL {
-    id: UUID
+    client_id: UUID
     client_secret: string,
     name: string,
     document: string

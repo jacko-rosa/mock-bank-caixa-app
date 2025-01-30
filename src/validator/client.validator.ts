@@ -1,4 +1,4 @@
-import { isRequired, shouldHasLessThen, shouldHasMorThen, validateCPF_CNPJ } from "@/src/validator/util.validator";
+import { isRequired, shouldHasLessThen, shouldHasMorThen, validateCPF_CNPJ } from "./util.validator";
 import { PropCreateclientDTO } from "../definition/cliente.definitions";
 
 function password(password: string) {
@@ -14,7 +14,7 @@ function name(name: string) {
 }
 
 function validateRequest(body: PropCreateclientDTO) {
-    isRequired("reques", body);
+    isRequired("request", body);
     password(body.password);
     name(body.name)
     validateCPF_CNPJ(body.document);

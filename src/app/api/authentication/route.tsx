@@ -9,10 +9,10 @@ interface PostRequestBody {
 
 const client = await db.connect();
 
-async function listInvoices() {
-  const data = { status: 200, token: "myToken" };
-  return data;
-}
+// async function listInvoices() {
+//   const data = { status: 200, token: "myToken" };
+//   return data;
+// }
 
 async function listAccounts() {
   const data = await client.sql`
@@ -34,17 +34,17 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const headers = request.headers;
+    // const headers = request.headers;
     const body: PostRequestBody = await request.json();
 
     if (body === null || !body.username || !body.password) {
       return Response.json({ error: 'Invalid request body' }, { status: 400 });
     }
 
-    const name = "Jackson Machado Rosa";
-    const role = ["ADM"];
-    const time = new Date().toISOString();
-    const expire = 5 * (60 * 1000);
+    // const name = "Jackson Machado Rosa";
+    // const role = ["ADM"];
+    // const time = new Date().toISOString();
+    // const expire = 5 * (60 * 1000);
 
     // const token = jwt.sign(
     //   {
