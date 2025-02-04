@@ -1,16 +1,17 @@
 import { db } from "@vercel/postgres";
-import { PropCreateclientSQL } from "../definition/cliente.definitions";
-import { logEnd, throwError } from "../service/util.service";
+import { ClientSQL } from "../definition/cliente.definition";
+import { logEnd, logInit, throwError } from "../service/util.service";
 
 
-async function create(body: PropCreateclientSQL): Promise<PropCreateclientSQL | undefined> {
+async function _create(body: ClientSQL): Promise<ClientSQL | undefined> {
+    logInit('ClientRepository', 'create', body)
     const client = await db.connect();
 
     try {
         const data = await client.sql`
-        INSERT INTO client (client_secret, name, document)
-        VALUES (${body.client_secret}, ${body.name}, ${body.document})
-        RETURNING id`;
+        INSERT INTO client (client_secret, username, document)
+        VALUES (${body.client_secret}, ${body.username}, ${body.document})
+        RETURNING id;`;
 
         const client_id = data.rows[0].id;
         const response = { ...body, client_id }
@@ -23,6 +24,44 @@ async function create(body: PropCreateclientSQL): Promise<PropCreateclientSQL | 
     }
 }
 
+async function _getById(id: string): Promise<ClientSQL> {
+    logInit('ClientRepository', 'getById', id)
+    const client = await db.connect();
+
+    const data = await client.sql`
+        SELECT * 
+        FROM client 
+        WHERE 1=1
+            AND id=${id};`;
+
+    const response: ClientSQL = {
+        client_id: data.rows[0].id,
+        client_secret: data.rows[0].client_secret,
+        username: data.rows[0].username,
+        document: data.rows[0].document
+    };
+
+    logEnd('ClientRepository', 'getById', response)
+    return response;
+}
+
+async function _delete(id: string): Promise<boolean> {
+    logInit('ClientRepository', 'delete', id)
+    const client = await db.connect();
+
+    const data = await client.sql`
+        UPDATE CLIENT
+        SET active = FALSE
+        WHERE id=${id};`;
+
+    const response = data.rows.length > 0
+
+    logEnd('ClientRepository', 'delete', response)
+    return response;
+}
+
 export const ClientRepository = {
-    create
+    create: _create,
+    getById: _getById,
+    delete: _delete
 }

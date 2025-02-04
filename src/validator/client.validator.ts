@@ -1,5 +1,5 @@
 import { isRequired, shouldHasLessThen, shouldHasMorThen, validateCPF_CNPJ } from "./util.validator";
-import { PropCreateclientDTO } from "../definition/cliente.definitions";
+import { ClientDTO } from "../definition/cliente.definition";
 
 function password(password: string) {
     isRequired("password", password);
@@ -13,7 +13,11 @@ function name(name: string) {
     shouldHasLessThen("name", name, 200);
 }
 
-function validateRequest(body: PropCreateclientDTO) {
+function validateId(id: string) {
+    isRequired("id", id);
+}
+
+function validateCreateRequest(body: ClientDTO) {
     isRequired("request", body);
     password(body.password);
     name(body.name)
@@ -22,5 +26,6 @@ function validateRequest(body: PropCreateclientDTO) {
 
 
 export const ClientValidator = {
-    validateRequest
+    validateCreateRequest,
+    validateId
 }

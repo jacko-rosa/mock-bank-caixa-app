@@ -1,15 +1,15 @@
 import { UUID } from "crypto"
 
-export interface PropCreateclientDTO {
+export interface ClientDTO {
     id: UUID
     password: string,
     name: string,
     document: string
 }
 
-export interface PropCreateclientSQL {
+export interface ClientSQL {
     client_id: UUID
     client_secret: string,
-    name: string,
+    username: string,
     document: string
 }
