@@ -3,6 +3,12 @@ export interface LoginRequest {
     clientSecret: string;
 }
 
+export interface SiginupRequest {
+    username: string;
+    password: string;
+    document: string;
+}
+
 export interface Token_body {
     username: string;
     client_id: string;
@@ -13,7 +19,7 @@ export interface Token_body {
 export interface AuthenticationSQL {
     client_id: string,
     token: string,
-    create_date: string 
+    create_date: string
 }
 
 const key = process.env.NEXT_PUBLIC_JWT_SECRET as string;

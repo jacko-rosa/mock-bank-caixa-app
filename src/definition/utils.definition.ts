@@ -1,15 +1,15 @@
-export interface response {
-    response: object, status: httpStatus
+export interface Response {
+    response: object, status: HttpStatus
 }
 
-export interface httpStatus {
+export interface HttpStatus {
     status: number
 }
 
-const OK: httpStatus = { status: 200 }
-const BAD_REQUEST: httpStatus = { status: 400 }
-const UNAUTHORIZED: httpStatus = { status: 401 }
-const INTERNAL_ERROR: httpStatus = { status: 500 }
+const OK: HttpStatus = { status: 200 }
+const BAD_REQUEST: HttpStatus = { status: 400 }
+const UNAUTHORIZED: HttpStatus = { status: 401 }
+const INTERNAL_ERROR: HttpStatus = { status: 500 }
 
 export const ResponseStatus = {
     OK,

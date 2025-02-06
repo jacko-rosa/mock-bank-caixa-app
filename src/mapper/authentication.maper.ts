@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { AuthenticationDefinitions, AuthenticationSQL, Token_body } from "../definition/authentication.definition";
+import { AuthenticationDefinitions, AuthenticationSQL, SiginupRequest, Token_body } from "../definition/authentication.definition";
 import { ClientDTO } from "../definition/cliente.definition";
 
 function userToTokenBody(user: ClientDTO): Token_body {
@@ -23,12 +23,20 @@ function token_sql(token: string): AuthenticationSQL {
     return {
         client_id: token_body.client_id,
         token: token,
-        create_date: token_body.time.toISOString()
+        create_date: token_body.time as unknown as string
     }
 }
 
+function siginup_client(siginup: SiginupRequest): ClientDTO {
+    return {
+        password: siginup.password,
+        name: siginup.username,
+        document: siginup.document
+    } as ClientDTO
+}
 
 export const AuthenticationMapper = {
     generetaToken,
-    token_sql
+    token_sql,
+    siginup_client
 }

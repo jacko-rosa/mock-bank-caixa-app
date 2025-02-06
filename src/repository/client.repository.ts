@@ -1,27 +1,23 @@
 import { db } from "@vercel/postgres";
 import { ClientSQL } from "../definition/cliente.definition";
-import { logEnd, logInit, throwError } from "../service/util.service";
+import { logEnd, logInit } from "../service/util.service";
 
 
-async function _create(body: ClientSQL): Promise<ClientSQL | undefined> {
+async function _create(body: ClientSQL): Promise<ClientSQL> {
     logInit('ClientRepository', 'create', body)
     const client = await db.connect();
 
-    try {
-        const data = await client.sql`
+    const data = await client.sql`
         INSERT INTO client (client_secret, username, document)
         VALUES (${body.client_secret}, ${body.username}, ${body.document})
         RETURNING id;`;
 
-        const client_id = data.rows[0].id;
-        const response = { ...body, client_id }
+    const client_id = data.rows[0].id;
+    const response = { ...body, client_id }
 
-        logEnd('ClientRepository', 'create', response)
-        return response;
-    } catch (error) {
-        const msgError = `Database Error: Failed to Create Client:`;
-        throwError(msgError, error)
-    }
+    logEnd('ClientRepository', 'create', response)
+    return response;
+
 }
 
 async function _getById(id: string): Promise<ClientSQL> {

@@ -10,13 +10,13 @@ paths:
     post:
       tags:
         - Authentication
-      summary: login
+      summary: signup
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PostRequestBody'
+              $ref: '#/components/schemas/Authentication_SiginupRequest'
       responses:
         '200':
           description: bea
@@ -31,16 +31,49 @@ paths:
                   token:
                     type: string
                     example: Bearer myToken
+    put:
+      tags:
+        - Authentication
+      summary: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Authentication_LoginRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  token:
+                    type: string
+                    example: Bearer myToken
 
 components:
   schemas:
-    PostRequestBody:
+    Authentication_SiginupRequest:
       type: object
       properties:
         username:
           type: string
+          required: true
         password:
           type: string
-      required:
-        - username
-        - password
+          required: true
+        document:
+          required: true
+    Authentication_LoginRequest:
+      type: object
+      properties:
+        clientId:
+          type: string
+          required: true
+        clientSecret:
+          type: string
+          required: true

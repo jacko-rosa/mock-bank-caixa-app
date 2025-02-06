@@ -1,10 +1,10 @@
-import { httpStatus, response } from "../definition/utils.definition";
+import { HttpStatus, Response } from "../definition/utils.definition";
 
-function responseError(message: string, status: httpStatus): response {
+function responseError(message: string, status: HttpStatus): Response {
     return { response: { message: message }, status: status };
 }
 
-function responseSucess(data: object, status: httpStatus): response {
+function responseSucess(data: object, status: HttpStatus): Response {
     return { response: data, status: status };
 }
 
