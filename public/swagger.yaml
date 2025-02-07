@@ -19,7 +19,7 @@ paths:
               $ref: '#/components/schemas/Authentication_SiginupRequest'
       responses:
         '200':
-          description: bea
+          description: Authorization successful
           content:
             application/json:
               schema:
@@ -28,9 +28,9 @@ paths:
                   status:
                     type: number
                     example: 200
-                  token:
+                  message:
                     type: string
-                    example: Bearer myToken
+                    example: Authorization successful
     put:
       tags:
         - Authentication
@@ -43,6 +43,7 @@ paths:
               $ref: '#/components/schemas/Authentication_LoginRequest'
       responses:
         '200':
+          description: Authorization successful
           content:
             application/json:
               schema:
@@ -51,29 +52,59 @@ paths:
                   status:
                     type: number
                     example: 200
-                  token:
+                  message:
                     type: string
-                    example: Bearer myToken
+                    example: Authorization successful
+    get:
+      tags:
+        - Authentication
+      summary: authorize
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Authorization successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: Authorization successful
 
 components:
+  securitySchemes:
+    bearerAuth:    
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
     Authentication_SiginupRequest:
       type: object
       properties:
         username:
           type: string
-          required: true
         password:
           type: string
-          required: true
         document:
-          required: true
+          type: string
+      required:
+        - username
+        - password
+        - document
+        
     Authentication_LoginRequest:
       type: object
       properties:
         clientId:
           type: string
-          required: true
         clientSecret:
           type: string
-          required: true
+      required:
+        - clientId
+        - clientSecret
