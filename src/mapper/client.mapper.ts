@@ -1,4 +1,4 @@
-import { ClientSQL, ClientDTO } from "../definition/cliente.definition";
+import { ClientDTO, ClientSQL } from "../definition/cliente.definition";
 import { logEnd, logInit } from "../service/util.service";
 
 function sql_dto(domain: ClientSQL): ClientDTO {

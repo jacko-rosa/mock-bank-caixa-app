@@ -16,6 +16,7 @@ async function _create(body: ClientSQL): Promise<ClientSQL> {
     const response = { ...body, client_id }
 
     logEnd('ClientRepository', 'create', response)
+    client.release();
     return response;
 
 }
@@ -38,6 +39,7 @@ async function _getById(id: string): Promise<ClientSQL> {
     };
 
     logEnd('ClientRepository', 'getById', response)
+    client.release();
     return response;
 }
 
@@ -53,6 +55,7 @@ async function _delete(id: string): Promise<boolean> {
     const response = data.rows.length > 0
 
     logEnd('ClientRepository', 'delete', response)
+    client.release();
     return response;
 }
 

@@ -18,7 +18,6 @@ async function _create(request: NextRequest) {
     });
 }
 
-
 export async function POST(request: NextRequest) {
     return _create(request);
 }

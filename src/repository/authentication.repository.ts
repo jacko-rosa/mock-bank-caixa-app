@@ -2,8 +2,10 @@ import { db } from "@vercel/postgres";
 import { AuthenticationSQL } from "../definition/authentication.definition";
 import { logEnd, logInit } from "../service/util.service";
 
+const REPOSITORY = 'AuthenticationRepository';
+
 async function _create(body: AuthenticationSQL): Promise<AuthenticationSQL> {
-    logInit('AuthenticationRepository', 'create', body)
+    logInit(REPOSITORY, 'create', body)
     const client = await db.connect();
 
     const data = await client.sql`
@@ -14,12 +16,13 @@ async function _create(body: AuthenticationSQL): Promise<AuthenticationSQL> {
     const client_id = data.rows[0].id;
     const response = { ...body, client_id }
 
-    logEnd('AuthenticationRepository', 'create', response)
+    logEnd(REPOSITORY, 'create', response)
+    client.release();
     return response;
 }
 
 async function _update(body: AuthenticationSQL): Promise<AuthenticationSQL> {
-    logInit('AuthenticationRepository', 'update', body)
+    logInit(REPOSITORY, 'update', body)
     const client = await db.connect();
 
     const data = await client.sql`
@@ -33,11 +36,28 @@ async function _update(body: AuthenticationSQL): Promise<AuthenticationSQL> {
     const client_id = data.rows[0].id;
     const response = { ...body, client_id }
 
-    logEnd('AuthenticationRepository', 'update', response)
+    logEnd(REPOSITORY, 'update', response)
+    client.release();
+    return response;
+}
+
+async function _getById(id: string): Promise<AuthenticationSQL> {
+    logInit(REPOSITORY, 'getById', id)
+    const client = await db.connect();
+
+    const data = await client.sql`
+        SELECT * FROM authentication
+        WHERE client_id = ${id}`;
+
+    const response = data.rows[0] as AuthenticationSQL;
+
+    logEnd(REPOSITORY, 'getById', response)
+    client.release();
     return response;
 }
 
 export const AuthenticationRepository = {
     create: _create,
-    update: _update
+    update: _update,
+    getById: _getById
 }

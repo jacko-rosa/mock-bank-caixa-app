@@ -13,7 +13,7 @@ export interface Token_body {
     username: string;
     client_id: string;
     time: Date;
-    expite: number;
+    expirate: number;
 }
 
 export interface AuthenticationSQL {

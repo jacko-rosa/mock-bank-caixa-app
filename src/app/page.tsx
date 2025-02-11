@@ -4,7 +4,7 @@ import "swagger-ui-react/swagger-ui.css";
 export default function Home() {
   return (
     <main>
-      <SwaggerUI url="/swagger.yaml" />
+      <SwaggerUI url="authentication/swagger.yaml" />
     </main>
   );
 }

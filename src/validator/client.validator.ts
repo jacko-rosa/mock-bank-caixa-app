@@ -1,5 +1,5 @@
-import { isRequired, shouldHasLessThen, shouldHasMorThen, validateCPF_CNPJ } from "./util.validator";
 import { ClientDTO } from "../definition/cliente.definition";
+import { isRequired, shouldHasLessThen, shouldHasMorThen, validateCPF_CNPJ } from "./util.validator";
 
 function password(password: string) {
     isRequired("password", password);
@@ -23,7 +23,6 @@ function validateCreateRequest(body: ClientDTO) {
     name(body.name)
     validateCPF_CNPJ(body.document);
 }
-
 
 export const ClientValidator = {
     validateCreateRequest,

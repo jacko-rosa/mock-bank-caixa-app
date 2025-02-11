@@ -7,7 +7,7 @@ function userToTokenBody(user: ClientDTO): Token_body {
         username: user.name,
         client_id: user.id,
         time: new Date(),
-        expite: AuthenticationDefinitions.expire
+        expirate: AuthenticationDefinitions.expire
     }
 }
 
