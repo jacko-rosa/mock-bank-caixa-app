@@ -1,0 +1,3 @@
+.swagger-ui .information-container:not(.contract) {
+    display: none;
+}

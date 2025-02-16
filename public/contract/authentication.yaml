@@ -1,0 +1,164 @@
+openapi: 3.0.0
+
+info:
+  title: API Bank Caixa
+  description: Mock for API at Bank Caixa
+  version: 1.0.0
+
+tags:
+  - name: Authentication
+    description: Operações relacionadas à autenticação de usuários (v1.0.0)
+    externalDocs:
+      url: "http://test.com.br"
+
+paths:
+  /authentication:
+    post:
+      tags:
+        - Authentication
+      summary: signup
+      operationId: signup
+      description: Método para cadastro de usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiginupRequest'
+      responses:
+        '200':
+          $ref: '#/components/schemas/SiginupResponse'
+        '400': 
+          $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - Authentication
+      summary: login
+      operationId: login
+      description: Método para obter o token de acesso
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          $ref: '#/components/schemas/loginResponse'
+        '400': 
+          $ref: '#/components/schemas/ErrorResponse'
+    get:
+      tags:
+        - Authentication
+      summary: authorize
+      operationId: authorize
+      description: Método para validar o token de acesso
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          $ref: '#/components/schemas/loginResponse'
+        '400': 
+          $ref: '#/components/schemas/ErrorResponse'
+        '401': 
+          $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:    
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+# Responses
+    SiginupResponse:
+      description: Cadastro realizado com sucesso
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+              clientId:
+                type: string
+                format: uuid
+                example: 123e4567-e89b-12d3-a456-426614174000
+    
+    LoginResponse:
+      description: Token gerado com sucesso
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+    ErrorResponse:
+      description: Erro
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                      example: 400
+                    title:
+                      type: string
+                      example: Invalid request
+                    detail:
+                      type: string
+                      example: The request is missing a required parameter
+              meta:
+                type: object
+                properties:
+                  totalRecords:
+                    type: number
+                    example: 1
+                  totalPages:
+                    type: number
+                    example: 1
+                  requestDateTime:
+                    type: string
+                    format: date-time
+                    example: "2020-01-21T00:00:00Z"
+
+# Requests
+    SiginupRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        document:
+          type: string
+      required:
+        - username
+        - password
+        - document
+    
+    LoginRequest:
+      type: object
+      properties:
+        clientId:
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        clientSecret:
+          type: string
+          format: password
+          example: P@ssw0rd1!?
+      required:
+        - clientId
+        - clientSecret
