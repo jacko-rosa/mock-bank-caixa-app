@@ -13,10 +13,6 @@ function name(name: string) {
     shouldHasLessThen("name", name, 200);
 }
 
-function validateId(id: string) {
-    isRequired("id", id);
-}
-
 function validateCreateRequest(body: ClientDTO) {
     isRequired("request", body);
     password(body.password);
@@ -26,5 +22,5 @@ function validateCreateRequest(body: ClientDTO) {
 
 export const ClientValidator = {
     validateCreateRequest,
-    validateId
+    validateCPF_CNPJ
 }

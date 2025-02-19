@@ -1,6 +1,6 @@
 export interface LoginRequest {
-    clientId: string;
-    clientSecret: string;
+    document: string;
+    password: string;
 }
 
 export interface SiginupRequest {

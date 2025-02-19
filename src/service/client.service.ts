@@ -21,16 +21,16 @@ async function _create(body: ClientDTO): Promise<ClientDTO> {
     return body;
 }
 
-async function _getById(id: string): Promise<ClientDTO> {
-    logInit('ClientService', 'getById', id);
-    ClientValidator.validateId(id);
-    const responseSQL = await ClientRepository.getById(id);
+async function _getByDocument(document: string): Promise<ClientDTO> {
+    logInit('ClientService', 'getByDocument', document);
+    ClientValidator.validateCPF_CNPJ(document);
+    const responseSQL = await ClientRepository.getByDocument(document);
     const response = ClientMapper.sql_dto(responseSQL)
-    logEnd('ClientService', 'getById', response);
+    logEnd('ClientService', 'getByDocument', response);
     return response;
 }
 
 export const ClientService = {
     create: _create,
-    getById: _getById
+    getByDocument: _getByDocument
 }

@@ -28,9 +28,7 @@ async function _signup(request: SiginupRequest): Promise<Response> {
     await ClientService.create(client).then(user => {
         const token = AuthenticationMapper.generetaToken(user);
         const authenticationSQL = AuthenticationMapper.token_sql(token);
-        return AuthenticationRepository.create(authenticationSQL).then(() => {
-            return response = ResponseMapper.responseSucess({ token: token }, ResponseStatus.OK)
-        });
+        return AuthenticationRepository.create(authenticationSQL)
     });
 
 
@@ -39,10 +37,10 @@ async function _signup(request: SiginupRequest): Promise<Response> {
 }
 
 async function _login(request: LoginRequest): Promise<Response> {
-    logInit(SERVICE, 'login', request.clientId);
+    logInit(SERVICE, 'login', request);
     let response = invalidCredential;
-    response = await ClientService.getById(request.clientId).then(user =>
-        bcrypt.compare(request.clientSecret, user.password).then(isMatch => {
+    response = await ClientService.getByDocument(request.document).then(user =>
+        bcrypt.compare(request.password, user.password).then(isMatch => {
             if (isMatch) {
                 const token = AuthenticationMapper.generetaToken(user);
                 const authenticationSQL = AuthenticationMapper.token_sql(token);

@@ -34,13 +34,16 @@ async function _login(request: NextRequest) {
   });
 }
 
+/*
+* Este método deveria validar o token junto ao Banco Central a fim de garantir a integridade do requerente
+* Assim como validar se o concentimento fornecido ainda é válido
+* Para fins didáticos este trecho será desconsiderado
+*/
 async function _authorize(request: NextRequest) {
   const token = request.headers.get('Authorization');
   logInit(ROUTE, 'authorize', "has token: " + !!token);
-
   if (token && token.startsWith("Bearer ")) {
-    const tokenWithoutBearer = token.slice(7); // Remove "Bearer " do token
-    return await AuthenticationService.authorize(tokenWithoutBearer).then(response => {
+    return await AuthenticationService.authorize(token).then(response => {
       const json = Response.json(response.response, response.status);
       logEnd(ROUTE, 'authorize', json);
       return json;

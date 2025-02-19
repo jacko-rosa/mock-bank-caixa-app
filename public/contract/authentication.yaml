@@ -12,7 +12,7 @@ tags:
       url: "http://test.com.br"
 
 paths:
-  /authentication:
+  '/authentication':
     post:
       tags:
         - Authentication
@@ -44,7 +44,7 @@ paths:
               $ref: '#/components/schemas/LoginRequest'
       responses:
         '200':
-          $ref: '#/components/schemas/loginResponse'
+          $ref: '#/components/schemas/LoginResponse'
         '400': 
           $ref: '#/components/schemas/ErrorResponse'
     get:
@@ -57,7 +57,7 @@ paths:
         - bearerAuth: []
       responses:
         '200':
-          $ref: '#/components/schemas/loginResponse'
+          $ref: '#/components/schemas/LoginResponse'
         '400': 
           $ref: '#/components/schemas/ErrorResponse'
         '401': 
@@ -151,11 +151,11 @@ components:
     LoginRequest:
       type: object
       properties:
-        clientId:
+        document:
           type: string
-          format: uuid
-          example: 123e4567-e89b-12d3-a456-426614174000
-        clientSecret:
+          description: CPF ou CNPJ
+          example: 000.000.000-00
+        password:
           type: string
           format: password
           example: P@ssw0rd1!?

@@ -21,15 +21,15 @@ async function _create(body: ClientSQL): Promise<ClientSQL> {
 
 }
 
-async function _getById(id: string): Promise<ClientSQL> {
-    logInit('ClientRepository', 'getById', id)
+async function _getByDocument(document: string): Promise<ClientSQL> {
+    logInit('ClientRepository', 'getByDocument', document)
     const client = await db.connect();
 
     const data = await client.sql`
         SELECT * 
         FROM client 
         WHERE 1=1
-            AND id=${id};`;
+            AND document=${document};`;
 
     const response: ClientSQL = {
         client_id: data.rows[0].id,
@@ -38,7 +38,7 @@ async function _getById(id: string): Promise<ClientSQL> {
         document: data.rows[0].document
     };
 
-    logEnd('ClientRepository', 'getById', response)
+    logEnd('ClientRepository', 'getByDocument', response)
     client.release();
     return response;
 }
@@ -61,6 +61,6 @@ async function _delete(id: string): Promise<boolean> {
 
 export const ClientRepository = {
     create: _create,
-    getById: _getById,
+    getByDocument: _getByDocument,
     delete: _delete
 }
