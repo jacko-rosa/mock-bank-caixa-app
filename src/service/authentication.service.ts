@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { LoginRequest, SiginupRequest, Token_body } from "../definition/authentication.definition";
+import { LoginRequest, SiginupRequest, Token_body, Token_body_OpenFinance } from "../definition/authentication.definition";
+import { ClientDTO } from '../definition/cliente.definition';
 import { Response, ResponseStatus } from "../definition/utils.definition";
 import { AuthenticationMapper } from '../mapper/authentication.maper';
 import { ResponseMapper } from '../mapper/util.mapper';
@@ -23,15 +24,12 @@ function _getExpirateDate(timestamp: Date, milliseconds: number): Date {
 async function _signup(request: SiginupRequest): Promise<Response> {
     logInit(SERVICE, 'signup', request);
     let response = invalidCredential;
-
     const client = AuthenticationMapper.siginup_client(request)
     await ClientService.create(client).then(user => {
         const token = AuthenticationMapper.generetaToken(user);
         const authenticationSQL = AuthenticationMapper.token_sql(token);
         return AuthenticationRepository.create(authenticationSQL)
     });
-
-
     logEnd(SERVICE, 'signup', response);
     return response;
 }
@@ -61,7 +59,6 @@ async function _authorize(request: string | null): Promise<Response> {
     logInit(SERVICE, 'authorize', request!.slice(0, 10) + '...');
     const token_body = jwt.decode(request!) as Token_body;
     logMid(SERVICE, 'authorize', 'jwt.decode', token_body);
-
     const response = await AuthenticationRepository.getById(token_body.client_id).then(token_sql => {
         logMid(SERVICE, 'authorize', 'getById.then', 'create_date:' + token_sql.create_date);
         if (token_sql.token === request) {
@@ -75,15 +72,22 @@ async function _authorize(request: string | null): Promise<Response> {
             return unauthorized;
         }
     })
-
-
     logEnd(SERVICE, 'login', response);
     return response;
+}
 
+async function _authorizeOpenFinance(request: string | null): Promise<ClientDTO> {
+    logInit(SERVICE, 'authorizeOpenFinance', request!.slice(0, 10) + '...');
+    const token_body = jwt.decode(request!) as Token_body_OpenFinance;
+    logMid(SERVICE, 'authorizeOpenFinance', 'jwt.decode', token_body);
+    const response = await ClientService.getByDocument(token_body.document)
+    logEnd(SERVICE, 'authorizeOpenFinance', response);
+    return response;
 }
 
 export const AuthenticationService = {
     signup: _signup,
     login: _login,
-    authorize: _authorize
+    authorize: _authorize,
+    authorizeOpenFinance: _authorizeOpenFinance
 };

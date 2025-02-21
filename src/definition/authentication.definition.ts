@@ -16,6 +16,11 @@ export interface Token_body {
     expirate: number;
 }
 
+export interface Token_body_OpenFinance {
+    document: string; // client_id
+    exp: number;
+}
+
 export interface AuthenticationSQL {
     client_id: string,
     token: string,
