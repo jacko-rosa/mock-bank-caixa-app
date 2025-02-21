@@ -16,8 +16,13 @@ export interface Token_body {
     expirate: number;
 }
 
+/**
+ * definitions: Authorization
+ * Objeto resumido para fiuns didáticos
+ * client_id substituiído por document
+ */
 export interface Token_body_OpenFinance {
-    document: string; // client_id
+    document: string;
     exp: number;
 }
 
