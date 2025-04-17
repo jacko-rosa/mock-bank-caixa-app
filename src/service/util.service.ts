@@ -1,17 +1,16 @@
 export function logInit(clazz: string, method: string, request: unknown) {
-    console.log(`START | class:${clazz} | method:${method} | request:${JSON.stringify(request)}`);
+    console.log(`CLAZZ: ${clazz} | START | METHOD: ${method} | ${JSON.stringify(request)}`);
 }
 
 export function logMid(clazz: string, main_method: string, step: string, request: unknown) {
-    console.log(`MIDLE | class:${clazz} | main_method:${main_method}| step:${step} | ${JSON.stringify(request)}`);
+    console.log(`CLAZZ: ${clazz} | MIDLE | METHOD: ${main_method} | STEP: ${step} | CONTENT: ${JSON.stringify(request)}}`);
 }
 
 export function logEnd(clazz: string, method: string, response: unknown) {
-    console.log(`END | class:${clazz} | method:${method} | response:${JSON.stringify(response)}`);
+    console.log(`CLAZZ: ${clazz} | END | METHOD: ${method} | ${JSON.stringify(response)}`);
 }
 
-export function throwError(msgError: string, error: unknown) {
-    console.error(`${msgError}${error}`);
-    throw new Error(msgError);
+export async function throwError(error: Error, clazz: string, method: string): Promise<never> {
+    console.error(`CLAZZ: ${clazz} | METHOD: ${method} | ERROR: ${JSON.stringify(error)} MESSAGE: ${error.message}`);
+    throw error;
 }
-

@@ -1,36 +1,32 @@
-'use service'
+'use server';
 
 import bcrypt from 'bcrypt';
-import {
-    ClientDTO
-} from "../definition/cliente.definition";
+import { ClientDTO } from "../definition/cliente.definition";
 import { ClientMapper } from '../mapper/client.mapper';
-import { ClientRepository } from "../repository/client.repository";
+import { createClientDomain, getClientDomainByDocument } from "../repository/client.repository";
 import { ClientValidator } from "../validator/client.validator";
 import { logEnd, logInit } from './util.service';
 
+const CLAZZ = 'ClientService';
 
-async function _create(body: ClientDTO): Promise<ClientDTO> {
-    logInit('ClientService', 'create', body);
+export async function createClientDto(body: ClientDTO): Promise<ClientDTO> {
+    const METHOD = 'createClientDto';
+    logInit(CLAZZ, METHOD, body);
     ClientValidator.validateCreateRequest(body);
     body.password = await bcrypt.hash(body.password, 10);
     const bodySQL = ClientMapper.dto_sql(body)
-    const response = await ClientRepository.create(bodySQL);
+    const response = await createClientDomain(bodySQL);
     body.id = response.client_id;
-    logEnd('ClientService', 'create', response);
+    logEnd(CLAZZ, METHOD, response);
     return body;
 }
 
-async function _getByDocument(document: string): Promise<ClientDTO> {
-    logInit('ClientService', 'getByDocument', document);
+export async function getClientDtoByDocument(document: string): Promise<ClientDTO> {
+    const METHOD = 'getClientDtoByDocument';
+    logInit(CLAZZ, METHOD, document);
     ClientValidator.validateCPF_CNPJ(document);
-    const responseSQL = await ClientRepository.getByDocument(document);
+    const responseSQL = await getClientDomainByDocument(document);
     const response = ClientMapper.sql_dto(responseSQL)
-    logEnd('ClientService', 'getByDocument', response);
+    logEnd(CLAZZ, METHOD, response);
     return response;
-}
-
-export const ClientService = {
-    create: _create,
-    getByDocument: _getByDocument
 }

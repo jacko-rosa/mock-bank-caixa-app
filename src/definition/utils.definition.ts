@@ -16,5 +16,4 @@ export const ResponseStatus = {
     BAD_REQUEST,
     UNAUTHORIZED,
     INTERNAL_ERROR
-
 }

@@ -1,10 +1,12 @@
+'use server';
+
 import { db } from "@vercel/postgres";
 import { AuthenticationSQL } from "../definition/authentication.definition";
 import { logEnd, logInit } from "../service/util.service";
 
 const REPOSITORY = 'AuthenticationRepository';
 
-async function _create(body: AuthenticationSQL): Promise<AuthenticationSQL> {
+export async function create(body: AuthenticationSQL): Promise<AuthenticationSQL> {
     logInit(REPOSITORY, 'create', body)
     const client = await db.connect();
 
@@ -21,7 +23,7 @@ async function _create(body: AuthenticationSQL): Promise<AuthenticationSQL> {
     return response;
 }
 
-async function _update(body: AuthenticationSQL): Promise<AuthenticationSQL> {
+export async function update(body: AuthenticationSQL): Promise<AuthenticationSQL> {
     logInit(REPOSITORY, 'update', body)
     const client = await db.connect();
 
@@ -41,7 +43,7 @@ async function _update(body: AuthenticationSQL): Promise<AuthenticationSQL> {
     return response;
 }
 
-async function _getById(id: string): Promise<AuthenticationSQL> {
+export async function getById(id: string): Promise<AuthenticationSQL> {
     logInit(REPOSITORY, 'getById', id)
     const client = await db.connect();
 
@@ -54,10 +56,4 @@ async function _getById(id: string): Promise<AuthenticationSQL> {
     logEnd(REPOSITORY, 'getById', response)
     client.release();
     return response;
-}
-
-export const AuthenticationRepository = {
-    create: _create,
-    update: _update,
-    getById: _getById
 }

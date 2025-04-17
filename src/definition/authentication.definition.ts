@@ -22,8 +22,16 @@ export interface Token_body {
  * client_id substituiído por document
  */
 export interface Token_body_OpenFinance {
-    document: string;
-    exp: number;
+    client_info: {
+        client_id: string;
+        compe_code: string;
+    },
+    receptor_info: {
+        client_id: string;
+        roles: string[];
+    },
+    iat: number,
+    exp: number,
 }
 
 export interface AuthenticationSQL {
