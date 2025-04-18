@@ -2,14 +2,14 @@ import { authorizeOpenFinance } from "@/src/service/authentication.service";
 import { getBalanceDtoByAccountId } from "@/src/service/balance.service";
 import { ApiError } from "next/dist/server/api-utils";
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const token = request.headers.get('Authorization');
     const x_fapi_interaction_id = request.headers.get('x-fapi-interaction-id');
     const resolvedParams = await Promise.resolve(params);
     const accountId = resolvedParams.id;
 
-    if (!token) {
+    if (!token) { 
       return Response.json({ error: 'Authorization is required' }, { status: 401 });
     }
     if (!x_fapi_interaction_id) {

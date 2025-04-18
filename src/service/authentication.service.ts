@@ -28,12 +28,14 @@ function _getExpirateDate(timestamp: Date, milliseconds: number): Date {
 export async function signup(request: SiginupRequest): Promise<Response> {
     const METHOD = 'signup';
     logInit(CLAZZ, METHOD, request);
-    let response = invalidCredential;
+    const response = invalidCredential;
     const client = AuthenticationMapper.siginup_client(request)
     await createClientDto(client).then(user => {
         const token = AuthenticationMapper.generetaToken(user);
         const authenticationSQL = AuthenticationMapper.token_sql(token);
-        return authentication_create(authenticationSQL)
+        const result = authentication_create(authenticationSQL)
+        logEnd(CLAZZ, METHOD, result);
+        return result;
     });
     logEnd(CLAZZ, METHOD, response);
     return response;
