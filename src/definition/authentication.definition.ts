@@ -20,11 +20,13 @@ export interface Token_body {
  * definitions: Authorization
  * Objeto resumido para fiuns didáticos
  * client_id substituiído por document
+ * como concentmiento esta sendo abstraído, esta sendo passado o account_id no token
  */
 export interface Token_body_OpenFinance {
     client_info: {
         client_id: string;
         compe_code: string;
+        account_id?: string;
     },
     receptor_info: {
         client_id: string;
