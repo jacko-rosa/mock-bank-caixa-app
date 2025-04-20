@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { ApiError } from 'next/dist/server/api-utils';
 import { LoginRequest, SiginupRequest, Token_body, Token_body_OpenFinance } from "../definition/authentication.definition";
-import { ClientDTO } from '../definition/cliente.definition';
 import { Response, ResponseStatus } from "../definition/utils.definition";
 import { AuthenticationMapper } from '../mapper/authentication.maper';
 import { ResponseMapper } from '../mapper/util.mapper';
@@ -91,20 +90,19 @@ export async function authorize(request: string | null): Promise<Response> {
     return response;
 }
 
-export async function authorizeOpenFinance(token: string | null): Promise<ClientDTO> {
+export async function authorizeOpenFinance(token: string | null): Promise<Token_body_OpenFinance> {
     const METHOD = 'authorizeOpenFinance';
     try {
         logInit(CLAZZ, METHOD, { token });
         // validar token via TLS junto ao bacen
         // pra fins didáticos apenas validaremos que o receptor_info.client_id é igual ao client_id específico
-        const token_body = jwt.decode(String(token).replace('Bearer', '')) as Token_body_OpenFinance;
+        const token_body = jwt.decode(String(token).replace('Bearer ', '')) as Token_body_OpenFinance;
         logMid(CLAZZ, METHOD, 'jwt.decode', token_body);
         if (token_body.receptor_info.client_id != '77f62a78-a0bd-4af4-bde9-09348e95390e') {
             throw new ApiError(401, 'Unauthorized: invalid receptor')
         }
-        const response = await getClientDtoByDocument(token_body.client_info.client_id)
-        logEnd(CLAZZ, METHOD, response);
-        return response;
+        logEnd(CLAZZ, METHOD, token_body);
+        return token_body;
     } catch (error) {
         return throwError(error as Error, CLAZZ, METHOD);
     }

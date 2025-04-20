@@ -23,3 +23,21 @@ export async function getAccoutDomainByDocument(document: string): Promise<Accou
     client.release();
     return response;
 }
+
+export async function getAccoutDomainById(id: string): Promise<AccountDomain> {
+    const METHOD = 'getAccoutDomainById';
+    logInit(CLAZZ, METHOD, { id })
+    const client = await db.connect();
+
+    const data = await client.sql`
+        SELECT * 
+        FROM "account" 
+        WHERE 1=1
+            AND id=${id};`;
+
+    const response = data.rows[0] as AccountDomain;
+
+    logEnd(CLAZZ, METHOD, response)
+    client.release();
+    return response;
+}

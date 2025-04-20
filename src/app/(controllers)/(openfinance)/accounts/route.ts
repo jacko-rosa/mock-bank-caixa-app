@@ -1,12 +1,14 @@
 import { getAccoutDtoByDocument } from "@/src/service/account.service";
 import { authorizeOpenFinance } from "@/src/service/authentication.service";
+import { getClientDtoByDocument } from "@/src/service/client.service";
 import { ApiError } from "next/dist/server/api-utils";
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
     const token = request.headers.get('Authorization');
-    const client = await authorizeOpenFinance(token);
+    const tokenBody = await authorizeOpenFinance(token);
+    const client = await getClientDtoByDocument(tokenBody.client_info.client_id);
     const accounts = await getAccoutDtoByDocument(client.document);
     const response = Response.json({
       data: accounts,

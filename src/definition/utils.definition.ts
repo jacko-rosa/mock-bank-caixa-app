@@ -17,3 +17,7 @@ export const ResponseStatus = {
     UNAUTHORIZED,
     INTERNAL_ERROR
 }
+
+export interface OpenFinance<T> {
+    data: T;
+}
