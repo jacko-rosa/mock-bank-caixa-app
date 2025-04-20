@@ -17,6 +17,7 @@ export default function Home() {
   const options = [
     { value: 'authentication', label: 'Authentication' },
     { value: 'openfinance-accounts', label: 'OpenFinance: Accounts' },
+    { value: 'openfinance-payments', label: 'OpenFinance: Payments' },
   ]
 
   const [selectedOption, setSelectedOption] = useState<OptionType>(options[0]);
