@@ -23,7 +23,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     const balance = await getBalanceDtoByAccountId(accountId);
 
     const response = Response.json({
-      data: { balance },
+      data: { availableAmount: balance},
       links: {},
       meta: {
         totalRecords: 1,
